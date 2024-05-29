@@ -7,10 +7,7 @@ t(true, "[PYSQUARED] "), can_bus(spi0, spi0_cs0_pin){
         Initialize hardware core to operations on satellite.
     */
     try {
-        t.debug_print("Figure out how to write to flash memory\n");                 //figure our how to section out some memory for flags
         pwr_mode=2;
-        assert(interrupt_instance == nullptr);
-        interrupt_instance = this;
         /*
             GPIO init
         */
@@ -40,6 +37,8 @@ t(true, "[PYSQUARED] "), can_bus(spi0, spi0_cs0_pin){
         */
         gpio_set_function(enable_burn_pin, GPIO_FUNC_PWM);
         gpio_set_function(enable_heater_pin, GPIO_FUNC_PWM);
+        burn_slice = pwm_gpio_to_slice_num(enable_burn_pin);
+        heater_slice = pwm_gpio_to_slice_num(enable_heater_pin);
         t.debug_print("PWM Pins Initialized!\n");
         /*
             I2C init
@@ -54,6 +53,17 @@ t(true, "[PYSQUARED] "), can_bus(spi0, spi0_cs0_pin){
         t.i2c_scan(i2c1);
         t.debug_print("I2C Bus Initialized!\n");
         /*
+            UART init
+        */
+        uart_init(uart0,2400);
+        gpio_set_function(tx_pin, GPIO_FUNC_UART);
+        gpio_set_function(rx_pin, GPIO_FUNC_UART);
+        uart_set_baudrate(uart0,115200);
+        uart_set_hw_flow(uart0, false, false);
+        uart_set_format(uart0, 8, 1, UART_PARITY_NONE);
+        uart_set_fifo_enabled(uart0, false);
+        t.debug_print("UART Bus Initialized!\n");
+        /*
             SPI init
         */
         spi_init(spi0, 500 * 1000);
@@ -65,13 +75,6 @@ t(true, "[PYSQUARED] "), can_bus(spi0, spi0_cs0_pin){
         gpio_set_function(spi1_sck_pin, GPIO_FUNC_SPI);
         gpio_set_function(spi1_mosi_pin, GPIO_FUNC_SPI);
         t.debug_print("SPI Bus Initialized!\n");
-        /*
-            UART init
-        */
-        uart_init(uart0, 115200);
-        gpio_set_function(tx_pin, GPIO_FUNC_UART);
-        gpio_set_function(rx_pin, GPIO_FUNC_UART);
-        t.debug_print("UART Bus Initialized!\n");
         /*
             LED Driver init
         */
@@ -211,8 +214,10 @@ void pysquared::flash_read(uint8_t *data, uint8_t page){
         uint32_t ints = save_and_disable_interrupts();
         for(int i = 0; i < 256; i++){
             data[i] = flash_target_contents[i];
+            nvm_memory[i]=data[i];
         }
         restore_interrupts(ints);
+        t.debug_print("Done reading!\n");
     }
     catch(...){
         t.debug_print("error reading from flash!\n");
@@ -234,10 +239,7 @@ void pysquared::flash_variable_read(uint8_t *data){
 
 void pysquared::reg_set(const uint8_t reg, const uint8_t val){
     try{
-        uint8_t data[1u<<8];
-        flash_read(data,0);
-        data[reg]=val;
-        flash_variable_update(data);
+        nvm_memory[reg]=val;
         return;
     }
     catch(...){
@@ -249,7 +251,7 @@ void pysquared::reg_set(const uint8_t reg, const uint8_t val){
 void pysquared::bit_set(const uint8_t reg, const uint8_t bit, bool state){
     try{
         uint8_t data[1u<<8];
-        flash_read(data,0);
+        flash_variable_read(data);
         if(state){
             data[reg] |= (0x01<<bit);
         }
@@ -275,6 +277,7 @@ void pysquared::bus_reset(){
         flash_update();
         for(int i = 10; i > 0; i --){
             t.debug_print("Bus being reset in " + to_string(i) + "seconds!\n");
+            sleep_ms(1000);
         }
         gpio_put(vbus_reset_pin, true);
     }
@@ -425,12 +428,17 @@ void pysquared::camera_off(){
 void pysquared::heater_on(){
     try{
         t.debug_print("Turning Heater on...\n");
-        led_driver.setDutyCycle(15,2048);
+        gpio_put(relay_pin, true);
+        pwm_set_enabled(heater_slice, true);
+        pwm_set_wrap(heater_slice, 500); //500 as the wrap point will yield a 4us period (125MHz = 8ns => 8ns * 500 = 4us)
+        pwm_set_chan_level(heater_slice, PWM_CHAN_A, 250); //This will yield a 50% duty cycle and a max average pwm voltage of 4.2V which is less than the 5V max they are rated for. (8.4V * 250/500 = 4.2V)
         t.debug_print("done!\n");
     }
     catch(...){
         t.debug_print("ERROR while turning on the heater!\n");
-        led_driver.setDutyCycle(15,0);
+        pwm_set_chan_level(heater_slice, PWM_CHAN_A, 0);
+        pwm_set_enabled(heater_slice,false);
+        gpio_put(relay_pin, false);
         error_count++;
     }
 }
@@ -438,7 +446,9 @@ void pysquared::heater_on(){
 void pysquared::heater_off(){
     try{
         t.debug_print("Turning Heater off...\n");
-        led_driver.setDutyCycle(15,0);
+        pwm_set_chan_level(heater_slice, PWM_CHAN_A, 0);
+        pwm_set_enabled(heater_slice,false);
+        gpio_put(relay_pin, false);
         t.debug_print("done!\n");
     }
 /*     catch(const std::exception &e){
@@ -447,13 +457,57 @@ void pysquared::heater_off(){
     } */
     catch(...){
         t.debug_print("ERROR while turning off the heater!\n");
+        gpio_put(relay_pin, false);
+        error_count++;
+    }
+}
+
+void pysquared::burn_on(float duty_cycle){
+    try{
+        int pwm_period = 500000; //ns or 2000Hz
+        int pico_period=8; //ns
+        int wrap_point = pwm_period/pico_period;
+        int duty_wrap = wrap_point*duty_cycle;
+        t.debug_print("Turning Burn Wire on...\n");
+        gpio_put(relay_pin, true);
+        pwm_set_enabled(burn_slice, true);
+        pwm_set_wrap(burn_slice, wrap_point);
+        pwm_set_chan_level(burn_slice, PWM_CHAN_A, duty_wrap); //This will yield a 50% duty cycle and a max average pwm voltage of 4.2V which is less than the 5V max they are rated for. (8.4V * 250/500 = 4.2V)
+        t.debug_print("done!\n");
+    }
+    catch(...){
+        t.debug_print("ERROR while turning on the Burn Wire!\n");
+        pwm_set_chan_level(burn_slice, PWM_CHAN_A, 0);
+        pwm_set_enabled(burn_slice,false);
+        gpio_put(relay_pin, false);
+        error_count++;
+    }
+}
+
+void pysquared::burn_off(){
+    try{
+        t.debug_print("Turning Burn Wire off...\n");
+        pwm_set_chan_level(burn_slice, PWM_CHAN_A, 0);
+        pwm_set_enabled(burn_slice,false);
+        gpio_put(relay_pin, false);
+        t.debug_print("done!\n");
+    }
+/*     catch(const std::exception &e){
+        printf(e.what());
+        error_count++;
+    } */
+    catch(...){
+        t.debug_print("ERROR while turning off the Burn Wire!\n");
+        gpio_put(relay_pin, false);
         error_count++;
     }
 }
 
 void pysquared::can_bus_init(){
     try{
-        can_bus.configure();
+        if(can_bus.begin()){
+            t.debug_print("intialized successfully!\n");
+        }
     }
     catch(...){
         t.debug_print("ERROR while configuring can bus!\n");
@@ -463,13 +517,22 @@ void pysquared::can_bus_init(){
 
 bool pysquared::can_bus_send(uint8_t *data){
     try{
-        if(can_bus.chip_responding()){
-            t.debug_print("MCP is responsive!\n");
+        CANMessage messageToSend;
+        messageToSend.id = 0x123; // Example CAN ID
+        messageToSend.length = 4; // Data length
+        messageToSend.data[0] = 0xDE; // Example data payload
+        messageToSend.data[1] = 0xAD;
+        messageToSend.data[2] = 0xBE;
+        messageToSend.data[3] = 0xEF;
+        if (can_bus.sendCANMessage(messageToSend)) {
+            t.debug_print("Message sent successfully.\n");
+            return true;
+        } 
+        else {
+            t.debug_print("Failed to send message.\n");
+            return false;
         }
-        uint32_t id = 0x123;
-        can_bus.sendMessage(id, 8, data);
-        t.debug_print("Message sent.\n");
-        return true;
+        
     }
     catch(...){
         t.debug_print("ERROR while sending item on can bus!\n");
@@ -479,23 +542,24 @@ bool pysquared::can_bus_send(uint8_t *data){
 }
 
 void pysquared::can_bus_loopback(){
-    can_bus.modifyRegister(MCP25625_CANCTRL, MCP25625_MODE_MASK, MCP25625_MODE_LOOPBACK);
+    can_bus.enableLoopback();
+    can_bus.enableSilentMode();
 }
 
 void pysquared::can_bus_listen(){
-    uint32_t received_id;
-    uint8_t received_data[MCP25625_MAX_MESSAGE_LENGTH];
-    uint8_t received_data_len = 0;
-    if (can_bus.receiveMessage(received_id, received_data_len, received_data)) {
-        t.debug_print("Received message in loopback mode:\n");
-        t.debug_print("ID: " + to_string(received_id) + "\n");
-        printf("Data: ");
-        for (size_t i = 0; i < received_data_len; i++) {
-            printf("%02x ", received_data[i]);
+    CANMessage messageReceived;
+    bool messageReceivedFlag = false;
+    for (int i = 0; i < 100 && !messageReceivedFlag; i++) { // Simple timeout mechanism
+        if (can_bus.receiveCANMessage(messageReceived)) {
+            t.debug_print("Message received: ID=0x" + to_string(messageReceived.id) + ", Data=" + to_string(messageReceived.data[0]) + "\n");
+            messageReceivedFlag = true;
+        } else {
+            sleep_ms(10); // Delay to prevent spamming the receive check
         }
-        printf("\n");
-    } else {
-        t.debug_print("No message received in loopback mode.\n");
+    }
+    
+    if (!messageReceivedFlag) {
+        t.debug_print("No message received.\n");
     }
 }
 
@@ -514,37 +578,23 @@ bool pysquared::uart_send(const char *msg){
 }
 
 void pysquared::uart_receive_handler(){
-    t.debug_print("checking uart buffer!\n");
-    uint8_t counter=0;
-    char *words;
-    while (uart_is_readable(uart0)) {
-        words[counter] = uart_getc(uart0);
+    int counter = 0;
+    uint8_t num;
+    while(uart_is_readable(uart0)) {
+        num = uart_getc(uart0);
+        t.debug_print(to_string(num) + "\n");
+        if(num-'0' <= 11){
+            exec_uart_command(num-'0');
+        }
         counter++;
-    }
-    t.debug_print(to_string(counter) + " Characters received!\n");
-    if(counter > 0){
-        //string str(words);
-        //t.debug_print("Received message: " + str + "\n");
-        t.debug_print("Decoding message...\n");
-        for(int i = 0; i < counter; i++){
-            if(words[i]-'0' <= 9){
-                t.debug_print("Command found!\n");
-                command=words[i]-'0';
-            }
-        }
-        if(command!=0){
-            t.debug_print("A command will be executed!\n");
-            //isr is not completing for some reason
-            exec_uart_command();
-        }
     }
 }
 
-void pysquared::exec_uart_command(){
+void pysquared::exec_uart_command(char commanded){
     string message;
     const char *msg;
-    t.debug_print("Command #" + to_string(command) + " will be executed!\n");
-    switch (command)
+    t.debug_print("Command #" + to_string(commanded) + " will be executed!\n");
+    switch (commanded)
     {
     case 1:
         t.debug_print("Executing command to send temperatures!\n");
@@ -572,7 +622,7 @@ void pysquared::exec_uart_command(){
         else{
             all_faces_on();
         }
-        message = to_string(faces_on_value);
+        message = "face value: " + to_string(faces_on_value);
         msg=message.c_str();
         uart_send(msg);
         break;
@@ -591,21 +641,47 @@ void pysquared::exec_uart_command(){
         else{
             camera_on();
         }
-        message=to_string(camera_on_value);
+        message="camera value: " + to_string(camera_on_value);
         msg=message.c_str();
         uart_send(msg);
         break;
     case 7:
         t.debug_print("command received to start transmitting through auxillary radio!\n");
         //do some logic to trigger radio use!
+        message = "will start using my own radio!";
+        msg = message.c_str();
+        uart_send(msg);
         break;
     case 8:
-        t.debug_print("command received to reset microcontroller!\n");
-        //do stuff
+        t.debug_print("command received to reset flight controller!\n");
+        message = "prepare to get power cycled... mwahahaha!";
+        msg = message.c_str();
+        uart_send(msg);
+        sleep_ms(1000);
+        flight_computer_off();
+        sleep_ms(100);
+        flight_computer_on();
         break;
     case 9:
-        t.debug_print("do something here, idk!\n");
-        //do stuff
+        t.debug_print("command received to finish burn sequence!\n");
+        burned = true;
+        message = "duly noted!";
+        msg=message.c_str();
+        uart_send(msg);
+        break;
+    case 11:
+        t.debug_print("command received to reset microcontroller!\nplease dont hurt me...\n");
+        message = "see you soon!";
+        msg = message.c_str();
+        uart_send(msg);
+        microcontroller_reset();
+        break;
+    case 208:
+        t.debug_print("command error... attempting to resolve!\n");
+        uart_get_hw(uart0)->rsr = 1;
+        message = "error!";
+        msg = message.c_str();
+        uart_send(msg);
         break;
     default:
         t.debug_print("an invalid command was received!\n");

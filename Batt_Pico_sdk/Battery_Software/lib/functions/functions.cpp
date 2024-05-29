@@ -32,8 +32,66 @@ void satellite_functions::battery_manager(){
 }
 
 void satellite_functions::battery_heater(){
-    //do stuff here
+    float battery_temp = c.thermocouple_temp();
+    float board_temp = c.board_temp();
+    int counter = 0;
+    t.debug_print("Battery temperature before heating: " + to_string(battery_temp) + "C\n");
+    try{
+        c.heater_on();
+        while(battery_temp < 0 && board_temp < 0 && counter < 100){
+            sleep_ms(10);
+            battery_temp = c.thermocouple_temp();
+            counter++;
+        }
+        c.heater_off();
+        t.debug_print("Battery temperature after heating: " + to_string(battery_temp) + "C\n");
+    }
+    catch(...){
+        t.debug_print("Error within heater handling!\n");
+        c.heater_off();
+    }
     return;
+}
+
+bool satellite_functions::burn_handler(bool has_been_attempted){
+    int max_allowed_burn_time=4;
+    int counter = 0;
+    int attempts = 0;
+    if(has_been_attempted){
+        max_allowed_burn_time = 5;
+    }
+    try{
+        while(attempts < 5){
+            counter = 0;
+            c.burn_on(0.20 + (attempts*0.05));
+            while(counter < (max_allowed_burn_time * 100)){
+                sleep_ms(10);
+                c.uart_receive_handler();
+                if(c.burned){
+                    break;
+                }
+                if(counter%100==0){
+                    watchdog_update();
+                }
+                counter++;
+            }
+            c.burn_off();
+            if(counter < (max_allowed_burn_time * 100)){
+                return true;
+            }
+            else{
+                sleep_ms(2000);
+            }
+            attempts++;
+            t.debug_print("No confirmation of burn after attempt " + to_string(attempts) + "\n");
+        }
+        return false;
+    }
+    catch(...){
+        t.debug_print("Error in burn sequence!\n");
+        return false;
+    }
+    
 }
 
 void satellite_functions::long_hybernate(){

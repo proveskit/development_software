@@ -10,10 +10,10 @@
 #include <device_drivers/PCT2075.h>
 #include <device_drivers/PCA9685.h>
 #include <device_drivers/ADS1015.h>
-#include <device_drivers/MCP25625_DRIVER.h>
 #include <device_drivers/MCP25625.h>
 #include "pico/stdlib.h"
 #include "hardware/timer.h"
+#include "hardware/pwm.h"
 #include "hardware/gpio.h"
 #include "hardware/flash.h"
 #include "hardware/sync.h"
@@ -35,7 +35,7 @@ public:
     PCT2075 internal_temp;
     PCA9685 led_driver;
     ADS1015 adc;
-    MCP25625Driver can_bus;
+    MCP25625 can_bus;
 
     uint8_t nvm_memory[1u<<8];
     uint8_t tx_pin=0;       //rarely used
@@ -69,10 +69,12 @@ public:
     uint8_t jetson_enable_pin=28;   //rarely used
     uint8_t five_volt_enable_pin=29;    
     
-    
+    uint burn_slice;
+    uint heater_slice;
     uint8_t pwr_mode;
-    int command=0;
+    char * uart_buffer;
     int error_count;
+    bool burned = false;
     bool trust_memory=true;
     bool faces_on_value=false;
     bool camera_on_value=false;
@@ -90,11 +92,11 @@ public:
     void five_volt_disable();
     void camera_on();
     void camera_off();
+    void burn_on(float duty_cycle);
+    void burn_off();
     void heater_on();
     void heater_off();
     void exception_handler();
-    void can_send(uint16_t id, char * message);
-    void can_handler();
     void reg_set(const uint8_t reg, const uint8_t val);
     void bit_set(const uint8_t reg, const uint8_t bit, bool state);
     void flash_variable_update(const uint8_t * data);
@@ -108,12 +110,8 @@ public:
     void can_bus_listen();
     bool uart_send(const char *msg);
     void uart_receive_handler();
-    void exec_uart_command();
+    void exec_uart_command(char commanded);
 
-    void install_isr_handler() {
-        t.debug_print("interrupt handler being setup!\n");
-        irq_set_exclusive_handler(UART0_IRQ, isrhandler);
-    }
 
     uint8_t power_mode();
     float thermocouple_temp();
@@ -129,10 +127,5 @@ private:
     tools t;
     const uint8_t *flash_target_contents;
     bool charge_status;
-    static inline pysquared *interrupt_instance = nullptr;
-    static void isrhandler() { //!< This is the actual ISR
-        interrupt_instance->t.debug_print("Interrupt received!\n");
-        interrupt_instance->uart_receive_handler();
-    }
 };
 #endif

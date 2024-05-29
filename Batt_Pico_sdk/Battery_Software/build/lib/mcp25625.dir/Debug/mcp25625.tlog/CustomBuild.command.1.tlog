@@ -1,0 +1,10 @@
+^C:\USERS\NICOL\ONEDRIVE\DOCUMENTS\GITHUB\PROVES-TESTS\BATT_PICO_SDK\BATTERY_SOFTWARE\LIB\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Raspberry Pi\Pico SDK v1.5.1\cmake\bin\cmake.exe" -SC:/Users/nicol/OneDrive/Documents/GitHub/proves-tests/Batt_Pico_sdk/Battery_Software -BC:/Users/nicol/OneDrive/Documents/GitHub/proves-tests/Batt_Pico_sdk/Battery_Software/build --check-stamp-file C:/Users/nicol/OneDrive/Documents/GitHub/proves-tests/Batt_Pico_sdk/Battery_Software/build/lib/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

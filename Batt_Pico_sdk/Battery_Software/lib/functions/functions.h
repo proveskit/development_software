@@ -4,7 +4,7 @@
 #include <neopixel/neopixel.h>
 #include <tools/tools.h>
 #include <pysquared/pysquared.h>
-#include <device_drivers/MCP25625_DRIVER.h>
+#include <device_drivers/MCP25625.h>
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
 #include "hardware/spi.h"
@@ -17,6 +17,7 @@ class satellite_functions{
     satellite_functions(pysquared& satellite);
     void battery_manager();
     void battery_heater();
+    bool burn_handler(bool has_been_attempted);
     void long_hybernate();
     void short_hybernate();
     void handle_errors();

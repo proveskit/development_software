@@ -2,49 +2,46 @@
 #define MCP25625_H
 
 #include "pico/stdlib.h"
+#include "hardware/spi.h"
+#include <stdio.h>
+#include <queue>
+#include <cstring>
 
-#define MCP25625_MAX_MESSAGE_LENGTH 8
+struct CANMessage {
+    uint32_t id;      // CAN ID
+    uint8_t data[8];  // Data payload
+    uint8_t length;   // Length of the data payload
+};
 
-// MCP25625 Register Addresses
-#define MCP25625_CANSTAT    0x0E
-#define MCP25625_CANCTRL    0x0F
-#define MCP25625_RXF0SIDH   0x00
-#define MCP25625_RXF1SIDH   0x04
-#define MCP25625_RXF2SIDH   0x08
-#define MCP25625_RXF3SIDH   0x10
-#define MCP25625_RXF4SIDH   0x14
-#define MCP25625_RXF5SIDH   0x18
-#define MCP25625_RXM0SIDH   0x20
-#define MCP25625_RXM1SIDH   0x24
-#define MCP25625_RXB0CTRL   0x60
-#define MCP25625_RXB1CTRL   0x70
-#define MCP25625_TXB0CTRL   0x30
-#define MCP25625_TXB1CTRL   0x40
-#define MCP25625_TXB2CTRL   0x50
-#define MCP25625_RXB0SIDH   0x61
-#define MCP25625_RXB1SIDH   0x71
-#define MCP25625_TXB0SIDH   0x31
-#define MCP25625_CNF1       0x2A
-#define MCP25625_CNF2       0x29
-#define MCP25625_CNF3       0x28
-#define MCP25625_CANINTE    0x2B
-#define MCP25625_CANINTF    0x2C
-#define MCP25625_EFLG       0x2D
-#define MCP25625_TXB_TXREQ  0x08
+class MCP25625 {
+public:
+    MCP25625(spi_inst_t *spiPort, uint csPin);
+    bool begin();
+    bool sendCANMessage(const CANMessage& message);
+    bool receiveCANMessage(CANMessage& message);
 
-// MCP25625 Bit Definitions
-#define MCP25625_RX0IF      0x01
-#define MCP25625_RX1IF      0x02
-#define MCP25625_TX0REQ     0x01
-#define MCP25625_TX1REQ     0x02
-#define MCP25625_TX2REQ     0x04
+    void enableLoopback();
+    void disableLoopback();
+    void enableSilentMode();
+    void disableSilentMode();
 
-// MCP25625 Mode Definitions
-#define MCP25625_MODE_MASK          0xE0
-#define MCP25625_MODE_NORMAL        0x00
-#define MCP25625_MODE_SLEEP         0x20
-#define MCP25625_MODE_LOOPBACK      0x40
-#define MCP25625_MODE_LISTEN_ONLY   0x60
-#define MCP25625_MODE_CONFIG        0x80
+    void queueMessage(const CANMessage& message);
+    bool transmitQueuedMessages();
+    bool receiveAllMessages(std::queue<CANMessage>& outMessages);
+
+private:
+    spi_inst_t *spi;
+    uint cs;
+    uint interruptPin;
+
+    std::queue<CANMessage> txQueue; // Transmit queue
+
+    void reset();
+    void writeRegister(uint8_t address, uint8_t value);
+    uint8_t readRegister(uint8_t address);
+    void modifyRegister(uint8_t address, uint8_t mask, uint8_t value);
+    void setupTransceiver();
+    void setMode(uint8_t mode);
+};
 
 #endif // MCP25625_H

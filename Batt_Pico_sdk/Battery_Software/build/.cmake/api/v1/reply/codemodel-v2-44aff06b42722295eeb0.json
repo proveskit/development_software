@@ -1,0 +1,668 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"build" : "lib",
+					"jsonFile" : "directory-lib-Debug-e9069484d90298468a11.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "lib",
+					"targetIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				},
+				{
+					"build" : "boot",
+					"jsonFile" : "directory-boot-Debug-aaa253a614a604261536.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "boot"
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "Project",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Debug-33cc9703ac24a0d2946f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Debug-e3c6aa27472f096f8a67.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ads1015::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ads1015-Debug-52f70b0eea208d7b32b6.json",
+					"name" : "ads1015",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "functions::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-functions-Debug-52110efbff18448f8aa7.json",
+					"name" : "functions",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ina219::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ina219-Debug-5420cdabde16df8ec95e.json",
+					"name" : "ina219",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "main::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-main-Debug-513ba822f4277c0f1912.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "mcp25625::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-mcp25625-Debug-5eed821f5fccec1cc0c8.json",
+					"name" : "mcp25625",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "neopixel::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-neopixel-Debug-e97f1e5393717c4a7e88.json",
+					"name" : "neopixel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pca9685::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pca9685-Debug-1ae78d5956bbbfb01506.json",
+					"name" : "pca9685",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pct2075::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pct2075-Debug-037eb8852676028c3913.json",
+					"name" : "pct2075",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pysquared::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pysquared-Debug-a4b097273e5fca77c35a.json",
+					"name" : "pysquared",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "tools::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-tools-Debug-aee184e2cd6bdf490710.json",
+					"name" : "tools",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Release-d0094a50bb2071803777.json",
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"build" : "lib",
+					"jsonFile" : "directory-lib-Release-e9069484d90298468a11.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "lib",
+					"targetIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				},
+				{
+					"build" : "boot",
+					"jsonFile" : "directory-boot-Release-aaa253a614a604261536.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "boot"
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "Project",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Release-33cc9703ac24a0d2946f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Release-e3c6aa27472f096f8a67.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ads1015::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ads1015-Release-26fa27af2bf0a2d2c071.json",
+					"name" : "ads1015",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "functions::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-functions-Release-1dc34abac9da359423cd.json",
+					"name" : "functions",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ina219::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ina219-Release-7ce086727b7a83281e2d.json",
+					"name" : "ina219",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "main::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-main-Release-ad5ccd1e17268e49ef1d.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "mcp25625::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-mcp25625-Release-1c6d1f974b50ef725111.json",
+					"name" : "mcp25625",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "neopixel::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-neopixel-Release-852cf065836e46a6aaa2.json",
+					"name" : "neopixel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pca9685::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pca9685-Release-47c6afe461a81a02de74.json",
+					"name" : "pca9685",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pct2075::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pct2075-Release-1c26a6ce59f135e4e694.json",
+					"name" : "pct2075",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pysquared::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pysquared-Release-fb3da63e1a850f997a73.json",
+					"name" : "pysquared",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "tools::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-tools-Release-77630281962e5fab5eb4.json",
+					"name" : "tools",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-MinSizeRel-d0094a50bb2071803777.json",
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"build" : "lib",
+					"jsonFile" : "directory-lib-MinSizeRel-e9069484d90298468a11.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "lib",
+					"targetIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				},
+				{
+					"build" : "boot",
+					"jsonFile" : "directory-boot-MinSizeRel-aaa253a614a604261536.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "boot"
+				}
+			],
+			"name" : "MinSizeRel",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "Project",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-33cc9703ac24a0d2946f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-e3c6aa27472f096f8a67.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ads1015::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ads1015-MinSizeRel-5e0513c054a2006b546b.json",
+					"name" : "ads1015",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "functions::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-functions-MinSizeRel-f383dd810eb0c3982aa5.json",
+					"name" : "functions",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ina219::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ina219-MinSizeRel-4a06dbc8a0d883282609.json",
+					"name" : "ina219",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "main::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-main-MinSizeRel-a8c179257006dac5b0aa.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "mcp25625::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-mcp25625-MinSizeRel-3be204dc9fa5bb9d70a7.json",
+					"name" : "mcp25625",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "neopixel::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-neopixel-MinSizeRel-3bcd5d0110ab1adb9cd8.json",
+					"name" : "neopixel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pca9685::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pca9685-MinSizeRel-f8a2bb31423d3079e093.json",
+					"name" : "pca9685",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pct2075::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pct2075-MinSizeRel-833652e6b489d09ba945.json",
+					"name" : "pct2075",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pysquared::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pysquared-MinSizeRel-0c897dfa3b4ba3fdb1b5.json",
+					"name" : "pysquared",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "tools::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-tools-MinSizeRel-021e84cc68e09ccfc9e5.json",
+					"name" : "tools",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-RelWithDebInfo-d0094a50bb2071803777.json",
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"build" : "lib",
+					"jsonFile" : "directory-lib-RelWithDebInfo-e9069484d90298468a11.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "lib",
+					"targetIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				},
+				{
+					"build" : "boot",
+					"jsonFile" : "directory-boot-RelWithDebInfo-aaa253a614a604261536.json",
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "boot"
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "Project",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-33cc9703ac24a0d2946f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-e3c6aa27472f096f8a67.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ads1015::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ads1015-RelWithDebInfo-79e2fd812162d5d65415.json",
+					"name" : "ads1015",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "functions::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-functions-RelWithDebInfo-4f536184b702d3a76ca1.json",
+					"name" : "functions",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ina219::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-ina219-RelWithDebInfo-ce2eee0a74522a29b5ee.json",
+					"name" : "ina219",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "main::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-main-RelWithDebInfo-5cadd3a97ec2ba067fc2.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "mcp25625::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-mcp25625-RelWithDebInfo-b640b4a7a7ef1a6d452c.json",
+					"name" : "mcp25625",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "neopixel::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-neopixel-RelWithDebInfo-80afac9a10bf85be6b97.json",
+					"name" : "neopixel",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pca9685::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pca9685-RelWithDebInfo-d30dad2329a66d3c22e1.json",
+					"name" : "pca9685",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pct2075::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pct2075-RelWithDebInfo-597d334b532a84215325.json",
+					"name" : "pct2075",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "pysquared::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-pysquared-RelWithDebInfo-ea75112114d3fc29e03a.json",
+					"name" : "pysquared",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "tools::@306ed2d68c6501e8728f",
+					"jsonFile" : "target-tools-RelWithDebInfo-26fc9c9dbef323e3d092.json",
+					"name" : "tools",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/nicol/OneDrive/Documents/GitHub/proves-tests/Batt_Pico_sdk/Battery_Software/build",
+		"source" : "C:/Users/nicol/OneDrive/Documents/GitHub/proves-tests/Batt_Pico_sdk/Battery_Software"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

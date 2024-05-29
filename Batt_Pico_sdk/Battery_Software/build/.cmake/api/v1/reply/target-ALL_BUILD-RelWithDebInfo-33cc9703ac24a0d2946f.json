@@ -1,0 +1,60 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "mcp25625::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "neopixel::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "tools::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "main::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "pysquared::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "pct2075::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "pca9685::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "ads1015::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "ina219::@306ed2d68c6501e8728f"
+		},
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		}
+	],
+	"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+	"isGeneratorProvided" : true,
+	"name" : "ALL_BUILD",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

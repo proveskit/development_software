@@ -22,6 +22,7 @@
 #define burned_bit 2
 #define heater_latch_bit 3
 #define vbus_reset_bit 4
+#define prior_burn_attempt 5
 
 #define boot_reg 2
 
